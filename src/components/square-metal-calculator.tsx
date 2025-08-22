@@ -15,7 +15,7 @@ export const SquareMetalCalculator: React.FC = () => {
   }));
 
   return (
-    <div className="w-full max-w-md mx-auto p-6">
+    <div className="w-full max-w-md mx-auto py-6">
       <div className="bg-blue-600 border-none">
         <div className="flex flex-row items-center justify-between p-3">
           <div className="text-yellow-300 text-2xl">Квадрат</div>
