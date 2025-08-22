@@ -22,7 +22,8 @@ export const CalculatorResults: React.FC<CalculatorResultsProps> = ({
       />
 
       <CalculatorField
-        label="Вага за погонний метр"
+        label="Вага одного метру"
+        // label="Вага за погонний метр"
         value={calculations.weightPerMeter}
         // value={formatNumber(calculations.weightPerMeter)}
         onChange={() => {}} // No-op for readonly
