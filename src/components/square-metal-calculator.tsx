@@ -15,77 +15,75 @@ export const SquareMetalCalculator: React.FC = () => {
   }));
 
   return (
-    <div className="w-full max-w-md mx-auto py-6">
-      <div className="bg-blue-600 border-none">
-        <div className="flex flex-row items-center justify-between p-3">
-          <div className="text-yellow-300 text-2xl">Квадрат</div>
-          <Button
-            variant="outline"
-            onClick={reset}
-            className="text-sm bg-yellow-300 text-blue-600"
-          >
-            Очистити
-          </Button>
-        </div>
-        <div className="p-3 space-y-4">
-          <CalculatorField
-            label="Тип металу (щільність)"
-            value={state.metalType}
-            onChange={(value) => updateField('metalType', value)}
-            type="select"
-            options={metalOptions}
-            error={errors.metalType}
-          />
-          <CalculatorField
-            label="Сторона квадрата"
-            value={state.side}
-            onChange={(value) => updateField('side', value)}
-            unit="мм"
-            step="0.1"
-            error={errors.side}
-          />
-          <CalculatorField
-            label="Довжина одиниці"
-            value={state.unitLength}
-            onChange={(value) => updateField('unitLength', value)}
-            unit="м"
-            step="0.01"
-            error={errors.unitLength}
-          />
-          <CalculatorField
-            label="Кількість"
-            value={state.quantity}
-            onChange={(value) => updateField('quantity', value)}
-            unit="шт"
-            step="0.001"
-            error={errors.quantity}
-          />
-          <CalculatorField
-            label="Загальна довжина"
-            value={state.totalLength}
-            onChange={(value) => updateField('totalLength', value)}
-            unit="м"
-            step="0.01"
-            error={errors.totalLength}
-          />
-          <CalculatorField
-            label="Загальна вага"
-            value={state.totalWeight}
-            onChange={(value) => updateField('totalWeight', value)}
-            unit="кг"
-            step="0.01"
-            error={errors.totalWeight}
-          />
-          <CalculatorField
-            label="Ціна за кілограм"
-            value={state.pricePerKg}
-            onChange={(value) => updateField('pricePerKg', value)}
-            unit="грн"
-            step="0.01"
-            error={errors.pricePerKg}
-          />
-          <CalculatorResults calculations={calculatedValues} />
-        </div>
+    <div className="w-full max-w-md mx-auto p-4 flex flex-col gap-4">
+      <div className="flex justify-between">
+        <div className="text-yellow-300 text-2xl">Квадрат</div>
+        <Button
+          variant="outline"
+          onClick={reset}
+          className="text-sm bg-yellow-300 text-blue-600 items-center justify-center"
+        >
+          Очистити
+        </Button>
+      </div>
+      <div className="space-y-4">
+        <CalculatorField
+          label="Тип металу (щільність)"
+          value={state.metalType}
+          onChange={(value) => updateField('metalType', value)}
+          type="select"
+          options={metalOptions}
+          error={errors.metalType}
+        />
+        <CalculatorField
+          label="Сторона квадрата"
+          value={state.side}
+          onChange={(value) => updateField('side', value)}
+          unit="мм"
+          step="0.1"
+          error={errors.side}
+        />
+        <CalculatorField
+          label="Довжина одиниці"
+          value={state.unitLength}
+          onChange={(value) => updateField('unitLength', value)}
+          unit="м"
+          step="0.01"
+          error={errors.unitLength}
+        />
+        <CalculatorField
+          label="Кількість"
+          value={state.quantity}
+          onChange={(value) => updateField('quantity', value)}
+          unit="шт"
+          step="0.001"
+          error={errors.quantity}
+        />
+        <CalculatorField
+          label="Загальна довжина"
+          value={state.totalLength}
+          onChange={(value) => updateField('totalLength', value)}
+          unit="м"
+          step="0.01"
+          error={errors.totalLength}
+        />
+        <CalculatorField
+          label="Загальна вага"
+          value={state.totalWeight}
+          onChange={(value) => updateField('totalWeight', value)}
+          unit="кг"
+          step="0.01"
+          error={errors.totalWeight}
+        />
+        <CalculatorField
+          label="Ціна за кілограм"
+          value={state.pricePerKg}
+          onChange={(value) => updateField('pricePerKg', value)}
+          unit="грн"
+          step="0.01"
+          error={errors.pricePerKg}
+        />
+        <CalculatorResults calculations={calculatedValues} />
       </div>
     </div>
   );

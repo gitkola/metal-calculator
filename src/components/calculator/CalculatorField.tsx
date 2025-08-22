@@ -151,9 +151,9 @@ export const CalculatorField: React.FC<CalculatorFieldProps> = ({
   };
 
   return (
-    <div className="space-y-2 flex flex-col">
-      <div className="space-y-2 flex items-center justify-between">
-        <div className="flex items-center justify-start flex-6">
+    <div>
+      <div className="flex">
+        <div className="flex flex-6 items-center justify-start">
           <Label
             htmlFor={`field-${label}`}
             className="block text-sm font-medium text-yellow-300"
@@ -171,7 +171,7 @@ export const CalculatorField: React.FC<CalculatorFieldProps> = ({
               <SelectTrigger
                 className={cn(
                   'text-yellow-300',
-                  error && 'border-red-500 text-red-500'
+                  error && 'border-red-400 text-red-400'
                 )}
               >
                 <SelectValue
@@ -197,7 +197,7 @@ export const CalculatorField: React.FC<CalculatorFieldProps> = ({
               onFocus={handleFocus}
               className={cn(
                 'text-yellow-300',
-                error && 'border-red-500 text-red-500'
+                error && 'border-red-400 text-red-400'
               )}
               disabled={disabled}
               placeholder={placeholder}
@@ -206,7 +206,7 @@ export const CalculatorField: React.FC<CalculatorFieldProps> = ({
         </div>
       </div>
       {error && (
-        <p className="text-sm text-white mt-1 bg-red-500 py-1 px-2 rounded">
+        <p className="text-sm text-red-400 mt-1 bg-transparent py-1 rounded">
           {error}
         </p>
       )}
