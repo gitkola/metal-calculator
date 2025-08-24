@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CalculatorField } from '@/components/calculator/CalculatorField';
-import { CalculatorResults } from '@/components/calculator/CalculatorResults';
 import { useMetalCalculations } from '@/hooks/useMetalCalculations';
 import { metalTypes } from '@/lib/types';
 
@@ -36,18 +35,16 @@ export const SquareMetalCalculator: React.FC = () => {
           error={errors.metalType}
         />
         <CalculatorField
-          label="Сторона квадрата"
+          label="Сторона квадрата, мм"
           value={state.side}
           onChange={(value) => updateField('side', value)}
-          unit="мм"
           step="0.1"
           error={errors.side}
         />
         <CalculatorField
-          label="Довжина одиниці"
+          label="Довжина одиниці, м"
           value={state.unitLength}
           onChange={(value) => updateField('unitLength', value)}
-          unit="м"
           step="0.01"
           error={errors.unitLength}
         />
@@ -60,30 +57,58 @@ export const SquareMetalCalculator: React.FC = () => {
           error={errors.quantity}
         />
         <CalculatorField
-          label="Загальна довжина"
+          label="Загальна довжина, м"
           value={state.totalLength}
           onChange={(value) => updateField('totalLength', value)}
-          unit="м"
           step="0.01"
           error={errors.totalLength}
         />
         <CalculatorField
-          label="Загальна вага"
+          label="Загальна вага, кг"
           value={state.totalWeight}
           onChange={(value) => updateField('totalWeight', value)}
-          unit="кг"
           step="0.01"
           error={errors.totalWeight}
         />
         <CalculatorField
-          label="Ціна за кілограм"
+          label="Ціна за кілограм, грн"
           value={state.pricePerKg}
           onChange={(value) => updateField('pricePerKg', value)}
-          unit="грн"
           step="0.01"
           error={errors.pricePerKg}
         />
-        <CalculatorResults calculations={calculatedValues} />
+        <CalculatorField
+          label="Загальна вартість, грн"
+          value={calculatedValues.totalCost}
+          // value={formatCurrency(calculations.totalCost)}
+          onChange={() => {}} // No-op for readonly
+          disabled={true}
+        />
+
+        <CalculatorField
+          label="Вага одного метру, кг/м"
+          // label="Вага за погонний метр"
+          value={calculatedValues.weightPerMeter}
+          // value={formatNumber(calculations.weightPerMeter)}
+          onChange={() => {}} // No-op for readonly
+          disabled={true}
+        />
+
+        <CalculatorField
+          label="Площа перерізу, см²"
+          value={calculatedValues.crossSectionArea}
+          // value={formatNumber(calculations.crossSectionArea)}
+          onChange={() => {}} // No-op for readonly
+          disabled={true}
+        />
+
+        <CalculatorField
+          label="Об'єм матеріалу, м³"
+          value={calculatedValues.volume}
+          // value={formatNumber(calculations.volume, 6)}
+          onChange={() => {}} // No-op for readonly
+          disabled={true}
+        />
       </div>
     </div>
   );
