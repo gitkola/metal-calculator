@@ -5,7 +5,7 @@ import { useMetalCalculations } from '@/hooks/useMetalCalculations';
 import { metalTypes } from '@/lib/types';
 
 export const SquareMetalCalculator: React.FC = () => {
-  const { state, errors, calculatedValues, updateField, reset } =
+  const { state, calculatedValues, updateField, reset } =
     useMetalCalculations(metalTypes);
 
   const metalOptions = metalTypes.map((metal) => ({
@@ -32,50 +32,43 @@ export const SquareMetalCalculator: React.FC = () => {
           onChange={(value) => updateField('metalType', value)}
           type="select"
           options={metalOptions}
-          error={errors.metalType}
+          // error={errors.metalType}
         />
         <CalculatorField
           label="Сторона квадрата, мм"
           value={state.side}
           onChange={(value) => updateField('side', value)}
-          step="0.1"
-          error={errors.side}
+          // error={errors.side}
         />
         <CalculatorField
           label="Довжина одиниці, м"
           value={state.unitLength}
           onChange={(value) => updateField('unitLength', value)}
-          step="0.01"
-          error={errors.unitLength}
+          // error={errors.unitLength}
         />
         <CalculatorField
-          label="Кількість"
+          label="Кількість, шт"
           value={state.quantity}
           onChange={(value) => updateField('quantity', value)}
-          unit="шт"
-          step="0.001"
-          error={errors.quantity}
+          // error={errors.quantity}
         />
         <CalculatorField
           label="Загальна довжина, м"
           value={state.totalLength}
           onChange={(value) => updateField('totalLength', value)}
-          step="0.01"
-          error={errors.totalLength}
+          // error={errors.totalLength}
         />
         <CalculatorField
           label="Загальна вага, кг"
           value={state.totalWeight}
           onChange={(value) => updateField('totalWeight', value)}
-          step="0.01"
-          error={errors.totalWeight}
+          // error={errors.totalWeight}
         />
         <CalculatorField
           label="Ціна за кілограм, грн"
           value={state.pricePerKg}
           onChange={(value) => updateField('pricePerKg', value)}
-          step="0.01"
-          error={errors.pricePerKg}
+          // error={errors.pricePerKg}
         />
         <CalculatorField
           label="Загальна вартість, грн"

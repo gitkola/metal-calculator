@@ -33,14 +33,15 @@ export const validateField = (
   field: keyof CalculatorData,
   value: number
 ): string | null => {
-  try {
-    const schema = calculatorSchema.pick({ [field]: true } as any);
-    schema.parse({ [field]: value });
-    return null;
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return error.errors[0]?.message || 'Некоректне значення';
-    }
-    return 'Некоректне значення';
-  }
+  // try {
+  //   const schema = calculatorSchema.pick({ [field]: true } as any);
+  //   schema.parse({ [field]: value });
+  //   return null;
+  // } catch (error) {
+  //   if (error instanceof z.ZodError) {
+  //     return error.errors[0]?.message || 'Некоректне значення';
+  //   }
+  //   return 'Некоректне значення';
+  // }
+  return null;
 };

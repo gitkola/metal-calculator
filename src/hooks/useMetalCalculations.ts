@@ -5,7 +5,7 @@ import type {
   MetalType,
   FieldErrors,
 } from '@/lib/types';
-import { validateField } from '@/lib/validation';
+// import { validateField } from '@/lib/validation';
 import { parseNumberInputWithPrecision } from '@/lib/formatters';
 
 export const useMetalCalculations = (metalTypes: MetalType[]) => {
@@ -18,7 +18,7 @@ export const useMetalCalculations = (metalTypes: MetalType[]) => {
     totalLength: '',
     quantity: '',
   });
-  const [errors, setErrors] = useState<FieldErrors>({});
+  // const [errors, setErrors] = useState<FieldErrors>({});
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
   const isCalculatingRef = useRef(false);
 
@@ -197,17 +197,17 @@ export const useMetalCalculations = (metalTypes: MetalType[]) => {
       }
 
       // Clear previous error for this field
-      setErrors((prev) => ({ ...prev, [field]: null }));
+      // setErrors((prev) => ({ ...prev, [field]: null }));
 
       // Validate if it's a numeric field
       if (field !== 'metalType') {
         const numValue =
           stringValue === '' ? 0 : parseNumberInputWithPrecision(stringValue);
-        const error = validateField(field as any, numValue);
-        if (error) {
-          setErrors((prev) => ({ ...prev, [field]: error }));
-          return;
-        }
+        // const error = validateField(field as any, numValue);
+        // if (error) {
+        //   setErrors((prev) => ({ ...prev, [field]: error }));
+        //   return;
+        // }
       }
 
       // Debounced recalculation (only if value is not empty)
@@ -238,13 +238,13 @@ export const useMetalCalculations = (metalTypes: MetalType[]) => {
       totalLength: '',
       quantity: '',
     });
-    setErrors({});
+    // setErrors({});
     setTouchedFields(new Set());
   }, [metalTypes]);
 
   return {
     state,
-    errors,
+    // errors,
     calculatedValues,
     updateField,
     reset,
