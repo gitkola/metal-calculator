@@ -1,8 +1,41 @@
----
-description: Use Bun instead of Node.js, npm, pnpm, or vite.
-globs: "*.ts, *.tsx, *.html, *.css, *.js, *.jsx, package.json"
-alwaysApply: false
----
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+This is a metal calculator application for calculating weight, volume, and cost of square metal bars. Built with Bun, React 19, TypeScript, Tailwind CSS, and shadcn/ui components. The UI is in Ukrainian.
+
+## Development Commands
+
+- `bun dev` - Start development server with hot reloading
+- `bun start` - Run production server  
+- `bun build` - Build for production (outputs to `dist/` directory with detailed file size reporting)
+- `bun test` - Run tests
+- `bun install` - Install dependencies
+
+## Architecture
+
+### Core Components
+- `SquareMetalCalculator` - Main calculator UI component (src/components/square-metal-calculator.tsx:8)
+- `useMetalCalculations` - Complex calculation hook with debounced recalculation logic (src/hooks/useMetalCalculations.ts:11)
+- `CalculatorField` - Reusable form field component for inputs and selects
+- `CalculatorResults` - Display component for calculated values
+
+### Data Flow
+The app uses a sophisticated calculation system where changing any field triggers automatic recalculation of dependent fields:
+- Metal type + side dimensions → weight per meter
+- Unit length + quantity ↔ total length  
+- Total length + weight per meter → total weight
+- Total weight + price per kg → total cost
+
+### Key Features
+- Real-time bidirectional calculations with debouncing (300ms)
+- Form validation with error display
+- Support for 6 metal types with different densities (src/lib/types.ts:6)
+- Responsive design with Tailwind CSS
+
+## Technology Stack
 
 Default to using Bun instead of Node.js.
 
