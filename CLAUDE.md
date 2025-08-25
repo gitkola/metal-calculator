@@ -8,137 +8,53 @@ This is a metal calculator application for calculating weight, volume, and cost 
 
 ## Development Commands
 
-- `bun dev` - Start development server with hot reloading
-- `bun start` - Run production server  
-- `bun build` - Build for production (outputs to `dist/` directory with detailed file size reporting)
-- `bun test` - Run tests
+- `bun dev` - Start development server with hot reloading (runs `bun --hot src/index.tsx`)
+- `bun start` - Run production server (with NODE_ENV=production)
+- `bun build` - Build for production using custom build script (outputs to `dist/` with detailed file size reporting)
 - `bun install` - Install dependencies
 
 ## Architecture
 
 ### Core Components
-- `SquareMetalCalculator` - Main calculator UI component (src/components/square-metal-calculator.tsx:8)
-- `useMetalCalculations` - Complex calculation hook with debounced recalculation logic (src/hooks/useMetalCalculations.ts:11)
-- `CalculatorField` - Reusable form field component for inputs and selects
-- `CalculatorResults` - Display component for calculated values
+- `SquareMetalCalculator` - Main calculator UI component (src/components/square-metal-calculator.tsx:12)
+- `useMetalCalculations` - Complex calculation hook with real-time recalculation logic (src/hooks/useMetalCalculations.ts:7)
+- Calculator field components:
+  - `CalculatorDropdownField` - For metal type selection
+  - `CalculatorDecimalField` - For numeric inputs
+  - `CalculatorCheckboxField` - For boolean toggles
 
-### Data Flow
-The app uses a sophisticated calculation system where changing any field triggers automatic recalculation of dependent fields:
-- Metal type + side dimensions → weight per meter
-- Unit length + quantity ↔ total length  
-- Total length + weight per meter → total weight
-- Total weight + price per kg → total cost
+### Data Flow & Calculations
+The app uses a sophisticated calculation system in `useMetalCalculations` where changing any field triggers automatic recalculation of dependent fields:
 
-### Key Features
-- Real-time bidirectional calculations with debouncing (300ms)
-- Form validation with error display
-- Support for 6 metal types with different densities (src/lib/types.ts:6)
-- Responsive design with Tailwind CSS
+- **Metal type + side dimensions** → weight per meter (using density from src/lib/types.ts:6)
+- **Unit length + quantity** ↔ total length (bidirectional)
+- **Total length + weight per meter** → total weight
+- **Total weight + price per kg** → total cost
+- **Cross-section area and volume** calculations based on dimensions
+
+Key calculation logic in `useMetalCalculations.ts:23-81`:
+- Switch-based recalculation depending on which field was changed
+- Handles bidirectional relationships (e.g., totalLength ↔ quantity × unitLength)
+- Real-time updates without debouncing (immediate state updates)
+
+### State Management
+- Single `CalculatorState` interface (src/lib/types.ts:15) manages all form fields
+- Fields can be either `string` (for display/editing) or `number` (for calculations)
+- `updateField` function handles type conversion and triggers recalculation
+
+### Supported Metals
+6 metal types with densities in г/см³ (src/lib/types.ts:6-13):
+- Сталь (Steel): 7.87
+- Нержавійка (Stainless Steel): 7.95  
+- Алюміній (Aluminum): 2.7
+- Мідь (Copper): 8.96
+- Латунь (Brass): 8.5
+- Титан (Titanium): 4.5
 
 ## Technology Stack
 
-Default to using Bun instead of Node.js.
-
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Bun automatically loads .env, so don't use dotenv.
-
-## APIs
-
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
-
-## Testing
-
-Use `bun test` to run tests.
-
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
-```
-
-## Frontend
-
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
-
-Server:
-
-```ts#index.ts
-import index from "./index.html"
-
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
-
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
-
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
-
-With the following `frontend.tsx`:
-
-```tsx#frontend.tsx
-import React from "react";
-
-// import .css files directly and it works
-import './index.css';
-
-import { createRoot } from "react-dom/client";
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
-```
-
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+- **Runtime**: Bun (instead of Node.js)
+- **Frontend**: React 19 with TypeScript
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Build**: Custom Bun build script (build.ts) with Tailwind plugin
+- **State**: React hooks (no external state management)
