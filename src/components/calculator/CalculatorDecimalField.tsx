@@ -27,13 +27,9 @@ const formatDisabledFieldValue = (
   return String(displayValue.toFixed(precision));
 };
 
-const formatEnabledFieldValue = (
-  value: string | number,
-  precision: number
-): string => {
+const formatEnabledFieldValue = (value: string | number): string => {
   const displayValue = parseFloat(String(value));
   if (isNaN(displayValue)) return '';
-  if (displayValue === 0) return '';
   return String(displayValue);
 };
 
@@ -45,7 +41,7 @@ const formatValueToDisplay = (
   if (disabled) {
     return formatDisabledFieldValue(value, precision);
   }
-  return formatEnabledFieldValue(value, precision);
+  return formatEnabledFieldValue(value);
 };
 
 export const CalculatorDecimalField: React.FC<CalculatorFieldProps> = ({
