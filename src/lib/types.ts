@@ -20,15 +20,8 @@ export interface CalculatorState {
   totalWeight: number | string;
   totalLength: number | string;
   quantity: number | string;
-}
-
-export interface CalculatedValues {
-  weightPerMeter: number;
-  crossSectionArea: number;
-  volume: number;
-  totalCost: number;
-}
-
-export interface FieldErrors {
-  [key: string]: string | null;
+  weightPerMeter: number | string;
+  crossSectionArea: number | string;
+  volume: number | string;
+  totalCost: number | string;
 }

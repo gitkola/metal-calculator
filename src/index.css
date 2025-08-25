@@ -6,6 +6,19 @@
   }
 
   body {
-    @apply grid place-items-center min-w-[320px] min-h-screen relative m-0 bg-blue-600 text-yellow-300;
+    @apply grid place-items-center min-w-[320px] min-h-screen relative m-0 bg-blue-600 text-yellow-300 font-light;
   }
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  margin: 0;
+  padding: 0;
 }

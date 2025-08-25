@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { CalculatorField } from '@/components/calculator/CalculatorField';
 import { useMetalCalculations } from '@/hooks/useMetalCalculations';
 import { metalTypes } from '@/lib/types';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from './ui/label';
+import { cn } from '@/lib/utils';
+import { CalculatorDropdownField } from './calculator/CalculatorDropdownField';
+import { CalculatorDecimalField } from './calculator/CalculatorDecimalField';
+import { CalculatorCheckboxField } from './calculator/CalculatorCheckboxField';
 
 export const SquareMetalCalculator: React.FC = () => {
-  const { state, calculatedValues, updateField, reset } =
-    useMetalCalculations(metalTypes);
-
+  const [isByLength, setIsByLength] = useState(true);
+  const { state, updateField, reset } = useMetalCalculations(metalTypes);
   const metalOptions = metalTypes.map((metal) => ({
     value: metal.name,
     label: `${metal.name} (${metal.density})`,
@@ -26,81 +30,85 @@ export const SquareMetalCalculator: React.FC = () => {
         </Button>
       </div>
       <div className="space-y-4">
-        <CalculatorField
+        <div className="flex flex-1 py-4 gap-4">
+          <CalculatorCheckboxField
+            label="По довжині"
+            value={isByLength}
+            onChange={setIsByLength}
+          />
+          <CalculatorCheckboxField
+            label="За вагою"
+            value={!isByLength}
+            onChange={() => setIsByLength(false)}
+          />
+        </div>
+
+        <CalculatorDropdownField
           label="Тип металу (щільність)"
           value={state.metalType}
           onChange={(value) => updateField('metalType', value)}
-          type="select"
           options={metalOptions}
-          // error={errors.metalType}
         />
-        <CalculatorField
+
+        <CalculatorDecimalField
           label="Сторона квадрата, мм"
           value={state.side}
           onChange={(value) => updateField('side', value)}
-          // error={errors.side}
         />
-        <CalculatorField
+        <CalculatorDecimalField
           label="Довжина одиниці, м"
           value={state.unitLength}
           onChange={(value) => updateField('unitLength', value)}
-          // error={errors.unitLength}
         />
-        <CalculatorField
+        <CalculatorDecimalField
           label="Кількість, шт"
           value={state.quantity}
           onChange={(value) => updateField('quantity', value)}
-          // error={errors.quantity}
         />
-        <CalculatorField
+        <CalculatorDecimalField
           label="Загальна довжина, м"
           value={state.totalLength}
           onChange={(value) => updateField('totalLength', value)}
-          // error={errors.totalLength}
+          disabled={!isByLength}
         />
-        <CalculatorField
+        <CalculatorDecimalField
           label="Загальна вага, кг"
           value={state.totalWeight}
           onChange={(value) => updateField('totalWeight', value)}
-          // error={errors.totalWeight}
+          disabled={isByLength}
         />
-        <CalculatorField
+        <CalculatorDecimalField
           label="Ціна за кілограм, грн"
           value={state.pricePerKg}
           onChange={(value) => updateField('pricePerKg', value)}
-          // error={errors.pricePerKg}
         />
-        <CalculatorField
+        <CalculatorDecimalField
           label="Загальна вартість, грн"
-          value={calculatedValues.totalCost}
-          // value={formatCurrency(calculations.totalCost)}
+          value={state.totalCost}
           onChange={() => {}} // No-op for readonly
           disabled={true}
         />
 
-        <CalculatorField
+        <CalculatorDecimalField
           label="Вага одного метру, кг/м"
-          // label="Вага за погонний метр"
-          value={calculatedValues.weightPerMeter}
-          // value={formatNumber(calculations.weightPerMeter)}
+          value={state.weightPerMeter}
           onChange={() => {}} // No-op for readonly
           disabled={true}
         />
 
-        <CalculatorField
+        <CalculatorDecimalField
           label="Площа перерізу, см²"
-          value={calculatedValues.crossSectionArea}
-          // value={formatNumber(calculations.crossSectionArea)}
+          value={state.crossSectionArea}
           onChange={() => {}} // No-op for readonly
           disabled={true}
         />
 
-        <CalculatorField
+        <CalculatorDecimalField
           label="Об'єм матеріалу, м³"
-          value={calculatedValues.volume}
-          // value={formatNumber(calculations.volume, 6)}
+          value={state.volume}
           onChange={() => {}} // No-op for readonly
           disabled={true}
+          precision={4}
         />
       </div>
     </div>

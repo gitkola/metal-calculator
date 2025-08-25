@@ -15,7 +15,6 @@ interface CalculatorFieldProps {
   label: string;
   value: number | string;
   onChange: (value: string) => void;
-  error?: string | null;
   type?: 'number' | 'select';
   options?: Array<{ value: string; label: string }>;
   disabled?: boolean;
@@ -29,7 +28,6 @@ export const CalculatorField: React.FC<CalculatorFieldProps> = ({
   label,
   value,
   onChange,
-  error,
   type = 'number',
   options,
   disabled = false,
@@ -43,79 +41,91 @@ export const CalculatorField: React.FC<CalculatorFieldProps> = ({
   };
 
   return (
-    <div>
-      <div className="flex">
-        <div className="flex flex-6 items-center justify-start">
-          <Label
-            htmlFor={`field-${label}`}
-            className="block text-sm font-medium text-yellow-300"
+    <div className="flex gap-4 font-light">
+      <div className="flex flex-1 items-center justify-start">
+        <Label
+          htmlFor={`field-${label}`}
+          className="block text-sm font-light text-yellow-300"
+        >
+          {label}
+        </Label>
+      </div>
+      <div className="flex flex-1 items-center justify-center">
+        {type === 'select' && options ? (
+          <Select
+            value={String(value)}
+            onValueChange={onChange}
+            disabled={disabled}
           >
-            {label}
-          </Label>
-        </div>
-        <div className="flex flex-4 items-center justify-center">
-          {type === 'select' && options ? (
-            <Select
-              value={String(value)}
-              onValueChange={onChange}
-              disabled={disabled}
+            <SelectTrigger
+              iconColor="text-yellow-300"
+              className={cn(
+                'border-yellow-300',
+                'focus-visible:ring-2',
+                'focus-visible:ring-yellow-300/50',
+                'dark:border-yellow-300',
+                'dark:focus-visible:ring-2',
+                'dark:focus-visible:ring-yellow-300/50'
+              )}
             >
-              <SelectTrigger
+              <SelectValue className="text-yellow-300" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          <div className="relative flex items-center">
+            <Input
+              id={`field-${label}`}
+              type="text"
+              value={value}
+              onChange={handleInputChange}
+              className={cn(
+                !disabled && 'pr-9',
+                'text-yellow-300',
+                'border-yellow-300',
+                'text-ellipsis',
+                'focus-visible:ring-yellow-300/50',
+                'selection:bg-blue-900',
+                'selection:text-yellow-300',
+                'disabled:opacity-100',
+                disabled && 'bg-gray-300/10 border-none'
+              )}
+              disabled={disabled}
+              placeholder={placeholder}
+              inputMode="decimal"
+            />
+            {!disabled && value !== '' && (
+              <button
+                onClick={() => onChange('')}
                 className={cn(
-                  'text-yellow-300',
-                  error && 'border-red-400 text-red-400'
+                  'absolute',
+                  'right-1',
+                  'top-1/2',
+                  'transform',
+                  '-translate-y-1/2',
+                  'active:opacity-50',
+                  'bg-gray-300/20',
+                  'rounded-full',
+                  'p-1'
                 )}
               >
-                <SelectValue
-                  placeholder={placeholder || 'Оберіть значення'}
-                  className="text-yellow-300"
+                <X
+                  absoluteStrokeWidth={true}
+                  strokeWidth={1}
+                  className="text-white"
+                  size={20}
                 />
-              </SelectTrigger>
-              <SelectContent>
-                {options.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          ) : (
-            <div className="relative flex items-center">
-              <Input
-                id={`field-${label}`}
-                type="text"
-                value={value}
-                onChange={handleInputChange}
-                className={cn(
-                  'pr-10',
-                  'text-yellow-300',
-                  error && 'border-red-400 text-red-400'
-                )}
-                disabled={disabled}
-                placeholder={placeholder}
-              />
-              {!disabled && (
-                <button
-                  onClick={() => onChange('')}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 active:opacity-50 bg-gray-500/30 rounded-full p-1"
-                >
-                  <X
-                    absoluteStrokeWidth={true}
-                    strokeWidth={1}
-                    className="text-white"
-                    size={20}
-                  />
-                </button>
-              )}
-            </div>
-          )}
-        </div>
+              </button>
+            )}
+          </div>
+        )}
       </div>
-      {error && (
-        <p className="text-sm text-red-400 mt-1 bg-transparent py-1 rounded">
-          {error}
-        </p>
-      )}
     </div>
   );
 };
