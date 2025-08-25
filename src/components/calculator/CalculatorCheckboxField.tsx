@@ -15,6 +15,7 @@ export const CalculatorCheckboxField: React.FC<
   return (
     <div className="flex flex-1 items-center gap-2">
       <Checkbox
+        id={`field-${label}`}
         checked={value}
         onCheckedChange={onChange}
         className={cn(
@@ -43,9 +44,8 @@ export const CalculatorCheckboxField: React.FC<
           'data-[state=unchecked]:inset-shadow-xs data-[state=unchecked]:inset-shadow-blue-900/50',
           'dark:data-[state=unchecked]:inset-shadow-xs dark:data-[state=unchecked]:inset-shadow-blue-900/50'
         )}
-        id="byLength"
       />
-      <Label className="font-light" htmlFor="byLength">
+      <Label className="font-light" htmlFor={`field-${label}`}>
         {label}
       </Label>
     </div>
